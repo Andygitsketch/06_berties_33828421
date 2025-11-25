@@ -6,20 +6,6 @@ router.get('/search',function(req, res, next){
     res.render("search.ejs")
 });
 
-// router.get('/search_result', function (req, res, next) {
-//     //searching in the database
-//     //res.send("You searched for: " + req.query.keyword)
-//     const textbox=req.query.search_text;
-
-//          let sqlquery = "SELECT * FROM books WHERE name= search_text LIKE ?"; // query database to get all the books
-//         // execute sql query
-//         db.query(sqlquery,  [textbox + '%'], function(err,result) => {
-//             if (err) {
-//                 next(err)
-//             }
-//             res.render("list.ejs", {availableBooks:result})
-//          });
-// });
 
 router.get('/search_result', function(req, res, next) {
         let sqlquery = "SELECT * FROM books WHERE name LIKE ?"; // query database to get all the books
