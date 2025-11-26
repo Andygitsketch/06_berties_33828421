@@ -1,3 +1,5 @@
+const { check, validationResult } = require('express-validator');
+
 // Create a new router
 const express = require("express")
 const router = express.Router()
@@ -10,30 +12,40 @@ const redirectLogin = (req, res, next) => {
     } 
 }
 
-
 router.get('/register', function (req, res, next) {
     res.render('register.ejs')
 })
 
 const saltRounds = 10
 
-router.post('/registered', function (req, res, next) {
+router.post('/registered', [check('email').isEmail(), 
+                  check('username').isLength({ min: 5, max: 20}), 
+                  check('password').isLength({ min: 8, max: 20}).matches('/\d/').matches(/'[/!@#$%^&*(),.?":{}|/]'/)], 
+function (req, res, next) {
+        const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.render('./register')
+    }
+    else { 
+    }
 const bcrypt = require('bcrypt')
  const plainPassword = req.body.password
 bcrypt.hash(plainPassword, saltRounds, function(err, hashedPassword){
 
   // Store hashed password in your database.
-  let sqlquery = "INSERT INTO users (username, password) VALUES (?,?)"
+  let sqlquery = "INSERT INTO users (username, password, first_name, last_name, email) VALUES (?,?,?,?,?)"
   // execute sql query
-    let newrecord = [req.body.username, req.body.password]
+    let newrecord = [req.sanitize(req.body.username), hashedPassword, req.sanitize(req.body.first), req.sanitize(req.body.last), req.sanitize(req.body.email)]
     db.query(sqlquery, newrecord, (err, result) => {
         if (err) {
             next(err)
         }
         else
-            result = 'Hello '+ req.body.first + ' '+ req.body.last +' you are now registered!  We will send an email to you at ' + req.body.email
+            result = 'Hello '+ req.sanitize(req.body.first) + ' '+ req.sanitize(req.body.last)+' you are now registered!  We will send an email to you at ' + req.body.email
             result += 'Your password is: '+ req.body.password +' and your hashed password is: '+ hashedPassword
-    res.send(result)})
+    res.send(result)
+
+        })
     })
 })
 
@@ -58,7 +70,7 @@ router.get('/listusers', function(req, res, next) {
 router.post('/loggedin', function (req, res, next) {
 const bcrypt = require('bcrypt')
 // Save user session here, when login is successful
-req.session.userId = req.body.username;
+req.session.userId = req.sanitize(req.body.username);
  const plainPassword = req.body.password
     // Compare the password supplied with the password in the database
     bcrypt.compare(req.body.password, hashedPassword, function(err, result) {
