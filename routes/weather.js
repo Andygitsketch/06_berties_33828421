@@ -1,0 +1,31 @@
+let apiKey = '519c8268f5d76f93419755dc383254a4'
+        let city = 'london'
+        let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
+                     
+        request(url, function (err, response, body) {
+          if(err){
+            next(err)
+          } else {
+        //    res.send(body)
+        var weather = JSON.parse(body)
+        var wmsg = 'It is '+ weather.main.temp + 
+        ' degrees in '+ weather.name +
+        '! <br> The humidity now is: ' + 
+        weather.main.humidity + 'with the wind blowing at' + weather.wind + 
+        '<br> and the sky look has' + weather.clouds + '% of clouds';
+
+        res.send (wmsg);
+    } 
+});
+
+var weather = JSON.parse(body)
+if (weather!==undefined && weather.main!==undefined) {
+   var wmsg = 'It is '+ weather.main.temp + 
+      ' degrees in '+ weather.name +
+      '! <br> The humidity now is: ' + 
+      weather.main.humidity;
+      res.send (wmsg);
+}
+else {
+   res.send ("No data found");
+}

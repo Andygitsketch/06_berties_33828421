@@ -2,10 +2,11 @@
 var express = require ('express')
 var ejs = require('ejs')
 const path = require('path')
-var mysql = require('mysql2');
-var dotenv = require('dotenv').config();
+var mysql = require('mysql2')
+var dotenv = require('dotenv').config()
 var session = require ('express-session')
-const expressSanitizer = require('express-sanitizer');
+const expressSanitizer = require('express-sanitizer')
+const request = require('request')
 
 // Create the express application object
 const app = express()
@@ -59,6 +60,10 @@ app.use('/users', usersRoutes)
 // Load the route handlers for /books
 const booksRoutes = require('./routes/books')
 app.use('/books', booksRoutes)
+
+// Load route for weather in Berties's books
+const mainRoutes = require('./routes/weather')
+app.use('/weather', booksRoutes)
 
 // Start the web app listening
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
