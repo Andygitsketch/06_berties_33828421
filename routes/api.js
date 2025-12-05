@@ -1,3 +1,7 @@
+// Create a new router
+const express = require("express")
+const router = express.Router()
+
 router.get('api/books', function (req, res, next) {
 
     // Query database to get all the books
@@ -62,3 +66,6 @@ router.get('/search_result', function(req, res, next) {
             res.render("list.ejs", {availableBooks:result})
          });
     });
+
+    // Export the router object so index.js can access it
+module.exports = router
