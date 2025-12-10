@@ -22,7 +22,7 @@ router.post('/registered', [check('email').isEmail(),
 
   // Match password to 
 
-check('password').isLength({ min: 8, max: 20 })], //).matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, "i")],
+check('password').isLength({ min: 8, max: 20 })], 
   function (req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -67,7 +67,6 @@ router.get('/login', function (req, res, next) {
   res.render('login.ejs')
 })
 
-// let sqlquery = 'SELECT * FROM users WHERE username LIKE ?';
 
 router.post('/login', function (req, res, next) {
   const bcrypt = require('bcrypt')
@@ -94,18 +93,13 @@ router.post('/login', function (req, res, next) {
                   return res.redirect ('./list');
                 }
                 else {
-                // req.res.send
-                console.log("Passwords  don't  matvh")
+                console.log("Passwords  don't  match")
                 }
               })
-            //res.render("listusers.ejs", {availableUsername:result})
+
          });
 
 })
-
-// router.get('/audit', function (req, res, next) {
-//     res.render('audit.env')
-// })
 
 // Export the router object so index.js can access it
 module.exports = router

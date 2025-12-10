@@ -12,7 +12,6 @@ router.get('/',function(req, res, next){
             if(err){
                 next(err)
             } else {
-                //    res.send(body)
                 var weather = JSON.parse(body)
                 if (weather!==undefined && weather.main!==undefined) {
                     var wmsg = 'It is '+ weather.main.temp + 
