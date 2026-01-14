@@ -29,6 +29,7 @@ router.get('/list', function(req, res, next) {
             res.render("list.ejs", {availableBooks:result})
          });
     });
+    
 router.get('/bargainbooks', function(req, res, next) {
         let sqlquery = "SELECT * FROM books WHERE price<20"; // query database to get all the books
         // execute sql query
